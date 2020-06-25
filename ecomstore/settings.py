@@ -120,6 +120,15 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+LOGIN_URL = '/myaccounts/login/'
+
+LOGIN_REDIRECT_URL = '/myaccounts/my_account/'
+
+LOGIN_REDIRECT_URL = '/'
+
+AUTH_PROFILE_MODULE = 'accounts.userprofile'
+
+SECURE_SSL_REDIRECT = True
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/

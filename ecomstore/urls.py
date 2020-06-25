@@ -26,7 +26,7 @@ urlpatterns = [
     re_path(r'^cart/', include('cart.urls'), ssl_handler()),
     re_path(r'^checkout/', include('checkout.urls')),
     re_path(r'^api/v1/', include('mpesa_api.urls'), ssl_handler()),
-    re_path(r'^accounts/', include('accounts.urls')),
-    re_path(r'^accounts/', include('django.contrib.auth.urls')),
+    re_path(r'^myaccounts/', include('accounts.urls'), ssl_handler()),
+    # path('accounts/', include('django.contrib.auth.urls')),
 ]
 handler404 = 'ecomstore.views.file_not_found_404'
