@@ -33,7 +33,7 @@ class Order(models.Model):
     shipping_address_1 = models.CharField(max_length=50)
     shipping_address_2 = models.CharField(max_length=50, blank=True)
     shipping_city = models.CharField(max_length=50)
-    shipping_state = models.CharField(max_length=2)
+    shipping_state = models.CharField(max_length=50, null=True, blank=True)
     shipping_country = models.CharField(max_length=50)
     shipping_zip = models.CharField(max_length=10)
     # billing information

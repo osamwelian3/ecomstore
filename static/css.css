@@ -120,6 +120,24 @@ div.product_thumbnail{
 div.product_image{
     float:left;
     padding:0 10px 10px 0;
+    height:217px;
+    width:350px;
+}
+.product_image {
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+}
+.pimage{
+    object-fit: contain;
+    height: 217px;
+    width: 350px;
+}
+.pright {
+    margin-left: 350px;
+    max-width: 350px;
+    padding-left: 20px;
+    word-wrap: break-word;
 }
 
 /* style for Django error messages */
@@ -132,7 +150,6 @@ background-color:Red;color:White;
 }
 
 form.cart{
-    float:right;
 }
 
 .cs{

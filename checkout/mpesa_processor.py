@@ -118,7 +118,7 @@ def process(request):
     try:
         message = lipa_na_mpesa_online(request)
     except Exception:
-        message = 4
+        message = 5
     if message == paid:
         transaction_id = "MPESA-" + str(Order.objects.all().count() + 1) + ""
         order = create_order(request, transaction_id)

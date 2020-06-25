@@ -58,7 +58,7 @@ def show_checkout(request, checkout_type, template_name="checkout/checkout.html"
     else:
         form = CheckoutForm()
     page_title = 'Checkout'
-    if request.method == 'POST':
+    if request.method == 'POST' and checkout_type == "Lipa":
         postdata = request.POST.copy()
         form = MpesaCheckoutForm(postdata)
     if request.GET and checkout_type == "Lipa":

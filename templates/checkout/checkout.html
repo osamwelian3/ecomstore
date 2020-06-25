@@ -58,7 +58,9 @@
         {% if checkout_type == 'Checkout' %}
         <th colspan="2"><input type="submit" name="submit" value="Place Order" class="submit" /></th>
         {% endif %}
+        {% if checkout_type == 'Lipa' %}
         <th colspan="2"><input type="submit" name="submit" value="Mpesa Payment" class="submit" /></th>
+        {% endif %}
     </tr>
     </table>
 </form>

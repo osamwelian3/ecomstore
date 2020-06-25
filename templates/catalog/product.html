@@ -2,9 +2,10 @@
 {% load catalog_filters %}
 
 {% block content %}
-    <div class="product_image">
-        <img src="{{ MEDIA_URL }}images/products/main/{{ p.image }}" alt="{{ p.name }}" />
+    <div class="product_image" style="background-image: url({{ MEDIA_URL }}images/products/main/{{ p.image }});">
+        <img src="{{ MEDIA_URL }}images/products/main/{{ p.image }}" alt="{{ p.name }}" class="pimage"/>
     </div>
+    <div class="pright">
     <h1>{{ p.name }}</h1>
     Brand: <em>{{ p.brand }}</em>
     <br /><br />
@@ -34,7 +35,8 @@
         <br />
         <input type="submit" value="Add to Cart" name="submit" alt="Add to Cart" />
     </form>
-    <br /><br />
+    </div>
+    <br />
     <!--<div class="cb"><br /><br /></div>-->
     <div class="cs">
         <h3>Product Description</h3>

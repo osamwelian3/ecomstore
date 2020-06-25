@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'cart',
     'checkout',
     'mpesa_api',
+    'accounts',
     'django.contrib.flatpages',
     'django.contrib.sites',
     'sslserver',
