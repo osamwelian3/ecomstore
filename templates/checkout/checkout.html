@@ -69,6 +69,9 @@
         {% if checkout_type == 'Lipa' %}
         <th colspan="2"><input type="submit" name="submit" value="Mpesa Payment" class="submit" /></th>
         {% endif %}
+        {% if checkout_type == 'PendingLipa' %}
+        <th colspan="2"><input type="submit" name="submit" value="Confirm Mpesa Payment" class="submit" /></th>
+        {% endif %}
     </tr>
     </table>
 </form>

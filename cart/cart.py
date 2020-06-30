@@ -10,8 +10,13 @@ CART_ID_SESSION_KEY = 'cart_id'
 
 # get the current user's cart id, sets new one if blank
 def _cart_id(request):
+    anontouser(request)
+    # sets the user id as the cart_id if the user is logged in
+    if request.user.is_authenticated:  # and request.session.get(CART_ID_SESSION_KEY, '') == '':
+        request.session[CART_ID_SESSION_KEY] = request.user.id
     if request.session.get(CART_ID_SESSION_KEY, '') == '':
         request.session[CART_ID_SESSION_KEY] = _generate_cart_id()
+        request.session['cartid2'] = request.session[CART_ID_SESSION_KEY]
     return request.session[CART_ID_SESSION_KEY]
 
 
@@ -104,3 +109,23 @@ def is_empty(request):
 def empty_cart(request):
     user_cart = get_cart_items(request)
     user_cart.delete()
+
+
+# Transfer items that were added to cart to the user if user logs in
+def anontouser(request):
+    if request.user.is_authenticated and not request.session.get('cartid2', '') == '':
+        cartobj = CartItem.objects.filter(cart_id=request.session.get('cartid2', ''))
+        if cartobj.count() > 0:
+            # check for cart items and loop through them changing the cart_id to point to the user id
+            for ci in cartobj:
+                ci.cart_id = request.user.id
+                # check if one of the cart items already exists in the users cart then just update the quantity and delete the old one otherwise, save
+                cart = CartItem.objects.filter(cart_id=request.user.id, product=ci.product)
+                if cart.count() > 0:
+                    cart[0].augment_quantity(ci.quantity)
+                    ci.delete()
+                else:
+                    ci.save()
+            # After saving delete the old session and create a new one with the current user id
+            del request.session['cartid2']
+            request.session[CART_ID_SESSION_KEY] = request.user.id

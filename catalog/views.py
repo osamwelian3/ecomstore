@@ -6,6 +6,7 @@ from cart import cart
 from django.http import HttpResponseRedirect
 from .forms import ProductAddToCartForm
 from django.views.decorators.csrf import csrf_exempt
+from checkout.mpesa_processor import pending_checker
 
 
 # Create your views here.
@@ -49,6 +50,9 @@ def show_product(request, product_slug, template_name="catalog/product.html"):
     }
     # need to evaluate the HTTP method
     if request.method == 'POST':
+        if pending_checker(request) == 0:
+            url = reverse('show_checkout', args=['PendingLipa'])
+            return HttpResponseRedirect(url)
         # add to cart....create the bound form
         postdata = request.POST.copy()
         form = ProductAddToCartForm(request, postdata)

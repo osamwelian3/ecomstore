@@ -28,6 +28,9 @@
         <div id="content">
             <a name="content"></a>
             <div class="contentIEPadder">
+                {% if pending == 0 %}
+                <p class="pending">You have an incomplete order that has been paid for. Please go to the checkout page and provide your shipping address.</p>
+                {% endif %}
                 {% block content %}{% endblock %}
             </div>
         </div>

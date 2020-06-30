@@ -29,6 +29,7 @@ def getAccessToken(request):
 
 
 def lipa_na_mpesa_online(request):
+    print(reverse('call_back'))
     access_token = validated_mpesa_access_token()
     api_url = MpesaC2bCredential.MPESA_URL
     headers = {

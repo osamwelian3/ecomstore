@@ -119,9 +119,10 @@ div.product_thumbnail{
 /* Product page styles */
 div.product_image{
     float:left;
-    padding:0 10px 10px 0;
+    padding:0 10px 20px 0;
     height:217px;
     width:350px;
+    word-wrap: break-word;
 }
 .product_image {
     overflow: hidden;
@@ -139,6 +140,11 @@ div.product_image{
     padding-left: 20px;
     word-wrap: break-word;
 }
+.pcaption {
+    background: #98ac5e;
+    width: max-content;
+    max-width: 350px;
+}
 
 /* style for Django error messages */
 ul.errorlist{
@@ -154,6 +160,7 @@ form.cart{
 
 .cs{
     clear:both;
+    padding-top: 5px;
 }
 
 /* styles for shopping cart page */

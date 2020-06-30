@@ -12,7 +12,7 @@ urlpatterns = [
     re_path(r'^register/$', views.register, ssl_handler(), name='register'),
     re_path(r'^my_account/$', views.my_account, ssl_handler(), name='my_account'),
     re_path(r'^order_details/(?P<order_id>[-\w]+)/$', views.order_details, ssl_handler(), name='order_details'),
-    re_path(r'^order_info//$', views.order_info, ssl_handler(), name='order_info'),
+    re_path(r'^order_info/$', views.order_info, ssl_handler(), name='order_info'),
 
     re_path(r'^login/$', auth_views.LoginView.as_view(), ssl_handler(), name='login'),
     re_path(r'^logout/$', auth_views.LogoutView.as_view(), name='logout'),

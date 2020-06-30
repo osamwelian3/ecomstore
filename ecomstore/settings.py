@@ -49,7 +49,6 @@ INSTALLED_APPS = [
     'django.contrib.flatpages',
     'django.contrib.sites',
     'sslserver',
-    'django_tools',
 ]
 
 SITE_ID = 1
@@ -104,7 +103,7 @@ DATABASES = {
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
 
-AUTH_PASSWORD_VALIDATORS = [
+AUTH_PASSWORD_VALIDATORS1 = [
     {
         'NAME': 'django.contrib.auth.password_validation'
                 '.UserAttributeSimilarityValidator',
@@ -117,6 +116,15 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+]
+
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'OPTIONS': {
+            'min_length': 4,
+        }
     },
 ]
 
@@ -155,7 +163,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticFILES')
 
 
 # Media settings
-MEDIA_URL = '/static/media/'
+MEDIA_URL = '/staticFILES/media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'staticFILES/media/')
 
 
 # Site template settings

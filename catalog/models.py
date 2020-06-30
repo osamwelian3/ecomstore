@@ -1,5 +1,7 @@
 from django.db import models
 from django.urls import reverse
+import os
+from ecomstore import settings
 # from . import views
 
 # Create your models here.
@@ -30,6 +32,40 @@ class Category(models.Model):
         return reverse('catalog_category', {'category_slug': self.slug})"""
 
 
+def image_name(instance, filename):
+    ext = filename.split('.')[-1]
+    pid = Product.objects.all().count() + 1
+    id = Product.objects.latest('created_at').id + 1
+    if Product.objects.filter(id=instance.id):
+        p = Product.objects.get(id=instance.id)
+        pimage = p.image.url
+        pid = pimage.rsplit('_', 1)[1].rsplit('.', 1)[0]
+        id = instance.id
+    filename = "%s_%s_%s.%s" % (instance.slug, id, pid, ext)
+    fullname = os.path.join(settings.MEDIA_ROOT + 'images/products/main', filename)
+    print(fullname)
+    if os.path.exists(fullname):
+        os.remove(fullname)
+    return os.path.join('images/products/main', filename)
+
+
+def thumbnail_name(instance, filename):
+    ext = filename.split('.')[-1]
+    pid = Product.objects.all().count() + 1
+    id = Product.objects.latest('created_at').id + 1
+    if Product.objects.filter(id=instance.id):
+        p = Product.objects.get(id=instance.id)
+        pimage = p.thumbnail.url
+        pid = pimage.rsplit('_', 1)[1].rsplit('.', 1)[0]
+        id = instance.id
+    filename = "%s_%s_%s.%s" % (instance.slug, id, pid, ext)
+    fullname = os.path.join(settings.MEDIA_ROOT + 'images/products/thumbnails', filename)
+    print(fullname)
+    if os.path.exists(fullname):
+        os.remove(fullname)
+    return os.path.join('images/products/thumbnails', filename)
+
+
 class Product(models.Model):
     name = models.CharField(max_length=255, unique=True)
     slug = models.SlugField(max_length=255, unique=True, help_text='Unique value for product page URL, created from name.')
@@ -37,7 +73,9 @@ class Product(models.Model):
     sku = models.CharField(max_length=50)
     price = models.DecimalField(max_digits=9, decimal_places=2)
     old_price = models.DecimalField(max_digits=9, decimal_places=2, blank=True, default=0.00)
-    image = models.CharField(max_length=50)
+    image = models.ImageField(upload_to=image_name)
+    thumbnail = models.ImageField(upload_to=thumbnail_name)
+    image_caption = models.CharField(max_length=200, null=True, blank=True)
     is_active = models.BooleanField(default=True)
     is_bestseller = models.BooleanField(default=False)
     is_featured = models.BooleanField(default=False)

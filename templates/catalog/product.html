@@ -2,8 +2,9 @@
 {% load catalog_filters %}
 
 {% block content %}
-    <div class="product_image" style="background-image: url({{ MEDIA_URL }}images/products/main/{{ p.image }});">
-        <img src="{{ MEDIA_URL }}images/products/main/{{ p.image }}" alt="{{ p.name }}" class="pimage"/>
+    <div class="product_image" style="background-image: url({{ p.image.url }});">
+        <img src="{{ p.image.url }}" alt="{{ p.name }}" class="pimage"/>
+        <p class="pcaption">{{ p.image_caption }}</p>
     </div>
     <div class="pright">
     <h1>{{ p.name }}</h1>
@@ -18,7 +19,7 @@
         {% endfor %}
         <br /><br />
     {% if p.sale_price %}
-        Was: <del>{{ p.price|currency }}</del>
+        Was: <del>{{ p.old_price|currency }}</del>
         <br />
         Now: {{ p.price|currency }}
     {% else %}

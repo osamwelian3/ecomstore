@@ -16,7 +16,7 @@ from accounts import profile
 # Create your views here.
 @csrf_exempt
 def show_checkout(request, checkout_type, template_name="checkout/checkout.html"):
-    print(request.GET.copy())
+    print(request.POST.copy())
     # request1 = locals()
     # print(request1)
     print('ian')
@@ -36,7 +36,8 @@ def show_checkout(request, checkout_type, template_name="checkout/checkout.html"
                 receipt_url = reverse('checkout_receipt')
                 CART_ID_SESSION_KEY = cart.CART_ID_SESSION_KEY
                 pending = PendingMpesa.objects.filter(cart=request.session[CART_ID_SESSION_KEY])
-                pending.delete()
+                if pending.count() == 1:
+                    pending.delete()
                 return HttpResponseRedirect(receipt_url)
         else:
             error_message = "Correct the errors below"
@@ -59,12 +60,29 @@ def show_checkout(request, checkout_type, template_name="checkout/checkout.html"
             form = CheckoutForm(instance=user_profile)
         else:
             form = CheckoutForm()
+            """if request.method == 'GET' and checkout_type != 'Lipa' and checkout_type != 'PendingLipa':
+                form = CheckoutForm(instance=user_profile)
+            if request.method == 'POST' and checkout_type == "Lipa":
+                postdata = request.POST.copy()
+                form = MpesaCheckoutForm(postdata)
+            if request.GET and checkout_type == "Lipa":
+                form = MpesaCheckoutForm(instance=user_profile)
+            if request.GET and checkout_type == "PendingLipa":
+                form = MpesaCheckoutForm(instance=user_profile)"""
+
+        if request.method == 'POST' and checkout_type == "Lipa":
+            postdata = request.POST.copy()
+            form = MpesaCheckoutForm(postdata)
+        if request.GET and checkout_type == "Lipa":
+            form = MpesaCheckoutForm()
+            """if request.method == 'POST' and checkout_type == "Lipa":
+                postdata = request.POST.copy()
+                form = MpesaCheckoutForm(postdata)
+            if request.GET and checkout_type == "Lipa":
+                form = MpesaCheckoutForm()
+            if request.GET and checkout_type == "PendingLipa":
+                form = MpesaCheckoutForm()"""
     page_title = 'Checkout'
-    if request.method == 'POST' and checkout_type == "Lipa":
-        postdata = request.POST.copy()
-        form = MpesaCheckoutForm(postdata)
-    if request.GET and checkout_type == "Lipa":
-        form = MpesaCheckoutForm()
     checkout_type = checkout_type
     return render(request, template_name, locals(), RequestContext(request))
 

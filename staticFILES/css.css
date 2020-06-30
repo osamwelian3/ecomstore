@@ -119,7 +119,7 @@ div.product_thumbnail{
 /* Product page styles */
 div.product_image{
     float:left;
-    padding:0 10px 10px 0;
+    padding:0 10px 20px 0;
     height:217px;
     width:350px;
 }
@@ -139,6 +139,10 @@ div.product_image{
     padding-left: 20px;
     word-wrap: break-word;
 }
+.pcaption {
+    background: #98ac5e;
+    width: max-content;
+}
 
 /* style for Django error messages */
 ul.errorlist{
@@ -150,7 +154,6 @@ background-color:Red;color:White;
 }
 
 form.cart{
-    float:right;
 }
 
 .cs{
