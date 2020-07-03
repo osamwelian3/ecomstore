@@ -15,7 +15,7 @@
         <li>{{ error_message }}</li>
     </ul>
 {% endif %}
-<form action="./{{ checkout_type }}" method="post">
+<form action="./{{ checkout_type }}" method="post" id="checkoutform">
     <fieldset class="checkout">
         <legend>Contact Info</legend>
         <table>
@@ -64,15 +64,28 @@
     <table>
     <tr>
         {% if checkout_type == 'Checkout' %}
-        <th colspan="2"><input type="submit" name="submit" value="Place Order" class="submit" /></th>
+        <th colspan="2"><input type="submit" name="submit" value="Place Order" class="submit" id="submitbtn"/></th>
         {% endif %}
         {% if checkout_type == 'Lipa' %}
-        <th colspan="2"><input type="submit" name="submit" value="Mpesa Payment" class="submit" /></th>
+        <th colspan="2"><input type="submit" name="submit" value="Mpesa Payment" class="submit" id="submitbtn" /></th>
         {% endif %}
         {% if checkout_type == 'PendingLipa' %}
-        <th colspan="2"><input type="submit" name="submit" value="Confirm Mpesa Payment" class="submit" /></th>
+        <th colspan="2"><input type="submit" name="submit" value="Confirm Mpesa Payment" class="submit" id="submitbtn" /></th>
         {% endif %}
     </tr>
     </table>
 </form>
+
+<script>
+document.getElementById("submitbtn").addEventListener("click", loading)
+function loading() {
+    var form = document.getElementById("checkoutform");
+    form.style.visibility = "hidden";
+    var loaddiv = document.createElement("div");
+    loaddiv.setAttribute("class", "loading-bar");
+    loaddiv.innerHTML = "{% include 'checkout/loading.html' %}";
+    form.parentNode.insertBefore(loaddiv, form.nextSibling);
+    form.submit();
+}
+</script>
 {% endblock %}

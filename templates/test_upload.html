@@ -1,0 +1,66 @@
+{% extends "catalog.html" %}
+{% load checkout_tags %}
+
+{% block content %}
+    <h2>Add Product</h2>
+    <form action="." enctype="multipart/form-data" method="post">
+        {% csrf_token %}
+        <fieldset class="checkout">
+            <legend>Product Info</legend>
+            <table>
+            {% form_table_row form.name %}
+            {% form_table_row form.slug %}
+            <script>
+                document.getElementById("id_name").addEventListener("change", slugvalue)
+                document.getElementById("id_name").addEventListener("keydown", slugvalue)
+                document.getElementById("id_name").addEventListener("keyup", slugvalue)
+                function slugvalue(){
+                    var name = document.getElementById("id_name");
+                    var slug = name.value;
+
+                    var slug = slug.replace(" ", "-").toLowerCase();
+                    var slugvalue1 = document.getElementById("id_slug").value = slug;
+                    slugvalue.value = slug;
+                }
+            </script>
+            <noscript>Sorry You don,t have javascript</noscript>
+            {% form_table_row form.brand %}
+            {% form_table_row form.sku %}
+            </table>
+        </fieldset>
+        <fieldset class="checkout">
+            <legend>Product Price</legend>
+            <table>
+            {% form_table_row form.price %}
+            {% form_table_row form.old_price %}
+            </table>
+        </fieldset>
+        <fieldset class="checkout">
+            <legend>Product Images</legend>
+            <table>
+            {% form_table_row form.image %}
+            {% form_table_row form.thumbnail %}
+            {% form_table_row form.image_caption %}
+            </table>
+        </fieldset>
+        <fieldset class="checkout">
+            <legend>Product Properties</legend>
+            <table>
+            {% form_table_row form.is_active %}
+            {% form_table_row form.is_bestseller %}
+            {% form_table_row form.is_featured %}
+            </table>
+        </fieldset>
+        <fieldset class="checkout">
+            <legend>Product Meta Data</legend>
+            <table>
+            {% form_table_row form.quantity %}
+            {% form_table_row form.description %}
+            {% form_table_row form.meta_keywords %}
+            {% form_table_row form.meta_description %}
+            {% form_table_row form.categories %}
+            </table>
+        </fieldset>
+        <input type="submit" name="submit" value="Add Product">
+    </form>
+{% endblock %}

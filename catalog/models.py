@@ -35,7 +35,10 @@ class Category(models.Model):
 def image_name(instance, filename):
     ext = filename.split('.')[-1]
     pid = Product.objects.all().count() + 1
-    id = Product.objects.latest('created_at').id + 1
+    try:
+        id = Product.objects.latest('created_at').id + 1
+    except Exception:
+        id = 1
     if Product.objects.filter(id=instance.id):
         p = Product.objects.get(id=instance.id)
         pimage = p.image.url
@@ -52,7 +55,10 @@ def image_name(instance, filename):
 def thumbnail_name(instance, filename):
     ext = filename.split('.')[-1]
     pid = Product.objects.all().count() + 1
-    id = Product.objects.latest('created_at').id + 1
+    try:
+        id = Product.objects.latest('created_at').id + 1
+    except Exception:
+        id = 1
     if Product.objects.filter(id=instance.id):
         p = Product.objects.get(id=instance.id)
         pimage = p.thumbnail.url
@@ -64,6 +70,11 @@ def thumbnail_name(instance, filename):
     if os.path.exists(fullname):
         os.remove(fullname)
     return os.path.join('images/products/thumbnails', filename)
+
+
+class ActiveProductManager(models.Manager):
+    def get_query_set(self):
+        return super(ActiveProductManager, self).get_query_set().filter(is_active=True)
 
 
 class Product(models.Model):
@@ -86,6 +97,9 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     categories = models.ManyToManyField(Category)
+
+    objects = models.Manager()
+    active = ActiveProductManager()
 
     class Meta:
         db_table = 'products'

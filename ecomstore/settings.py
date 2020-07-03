@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'checkout',
     'mpesa_api',
     'accounts',
+    'search',
     'django.contrib.flatpages',
     'django.contrib.sites',
     'sslserver',
@@ -195,3 +196,6 @@ stkpush_uri = '/mpesa/stkpush/v1/processrequest'
 REGISTER_URI = '/mpesa/c2b/v1/registerurl'
 QUERYSTK = '/mpesa/stkpushquery/v1/query'
 C2B_URI = '/mpesa/c2b/v1/simulate'
+
+
+PRODUCTS_PER_PAGE = 12
