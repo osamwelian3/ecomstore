@@ -1,8 +1,61 @@
-<form id="search" action="{% url 'search_results' %}" method="get">
+<form id="search" autocomplete="off" action="{% url 'search_results' %}" method="get">
     <h3><label for="id_q">Search</label></h3>
     <div style="text-align:right;">
+        <div id="sss">
         {% csrf_token %}
         {{ form.q }}
-        <input type="submit" value="Search" />
+            <ul class="sf" id="slist" style="list-style: none;"><li id="pitem" style="display: none;"></li></ul>
+        </div>
+        <input id="btn" type="submit" value="Search" />
+
     </div>
 </form>
+<script>
+function autoresult() {
+    var q = document.getElementById("id_q").value.toLowerCase();
+    if(q == ''){
+        document.getElementById('slist').innerHTML = '';
+    }
+    const request = new XMLHttpRequest();
+    const url = 'https://127.0.0.1:8000/search/autoresults/?q=' + q;
+    request.open("GET", url)
+    request.send();
+    request.onreadystatechange=function(){
+        if(this.readyState==4 && this.status==200){
+            document.getElementById('slist').innerHTML = '';
+            var products = request.responseText;
+            var products1 = JSON.parse(products);
+            let prodArray = [];
+            prodArray = products1.filter(prod => prod.name.toLowerCase().includes(q) || prod.brand.toLowerCase().includes(q) || prod.sku.toLowerCase().includes(q) || prod.description.toLowerCase().includes(q) || prod.thumbnail.toLowerCase().includes(q) || prod.image_caption.toLowerCase().includes(q) || prod.meta_description.toLowerCase().includes(q) || prod.meta_keywords.toLowerCase().includes(q) || prod.price.toLowerCase().includes(q) || prod.slug.toLowerCase().includes(q) || prod.categories__name.toLowerCase().includes(q) || prod.categories__slug.toLowerCase().includes(q) || prod.categories__meta_keywords.toLowerCase().includes(q) || prod.categories__meta_description.toLowerCase().includes(q) || prod.categories__description.toLowerCase().includes(q) || prod.old_price.toLowerCase().includes(q));
+            if (prodArray.length > 0) {
+                prodArray.map(prod => {
+                    document.getElementById('slist').innerHTML += '<li class="pitem" id="' + prod.name + '"><label>' + prod.name + '</label></li>';
+                });
+            };
+        }
+    }
+}
+
+document.getElementById("slist").addEventListener('click', function(e) {
+    document.getElementById("id_q").value = e.target.innerText;
+    document.getElementById('slist').innerHTML = '';
+
+});
+
+document.body.addEventListener('click', function(e) {
+    if(!document.getElementById('slist').addEventListener('click', function(){  })) {
+	    document.getElementById('slist').innerHTML = '';
+    };
+});
+
+document.onkeydown = TabExample;
+function TabExample(evt) {
+	var evt = (evt) ? evt : ((event) ? event : null);
+  var tabkey = 9;
+  if(evt.keyCode == tabkey) {
+  	document.getElementById('slist').innerHTML = '';
+  }
+}
+
+document.getElementById("id_q").addEventListener("input", autoresult)
+</script>

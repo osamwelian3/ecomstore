@@ -1,9 +1,10 @@
 from django.shortcuts import render
-from django.shortcuts import render_to_response
+from django.http import JsonResponse
 from django.template import RequestContext
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from search import search
 from ecomstore import settings
+import json
 
 
 # Create your views here.
@@ -28,3 +29,40 @@ def results(request, template_name="search/results.html"):
     # the usual...
     page_title = 'Search Results for: ' + q
     return render(request, template_name, locals(), RequestContext(request))
+
+
+# This view returns a json response of data user types in the search box in realtime and displays suggestions
+def autosearch(request):
+    q = request.GET.get('q', '')
+    data = list(search.products(q).get('products').values('name', 'description', 'sku', 'brand', 'meta_description',
+                                                          'categories__name', 'categories__slug', 'meta_keywords',
+                                                          'categories__description', 'categories__meta_keywords',
+                                                          'categories__meta_description', 'slug', 'price', 'thumbnail',
+                                                          'image_caption'))
+    # loop through the items and check for redundant products.
+    # Some products are redundant because they belong to more than one category.
+    # note: This only works if redundant data follow the other immediately in the list
+    data2 = []
+    count = 0
+    for d in data:
+        # Check if the list data2 has any item in it. It should be empty in the first loop
+        if len(data2) > 0:
+            # if it has an item then check if the item we want to add in it shares a name with the existing one
+            if len(data2) > 0 and d['name'] != data2[count]['name']:
+                # if it does not then add the new item to the list and then increment count by 1
+                data2.append(d)
+                count += 1
+        # if data2 list is empty. first time in the loop, just add the data but don't increment count.
+        else:
+            data2.append(d)
+    data = data2
+    return JsonResponse(data, safe=False)
+
+
+def removeDuplicate(data):
+    seen = set()
+    for x in data:
+        t = tuple(x.items())
+        if t not in seen:
+            yield x
+            seen.add(t)

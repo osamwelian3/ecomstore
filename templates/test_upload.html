@@ -19,6 +19,7 @@
                     var slug = name.value;
 
                     var slug = slug.replace(" ", "-").toLowerCase();
+                    var slug = slug.replace(/[&\/\\#, @^!\`\[\]+()$~%.'":*?<>{}]/g, '').toLowerCase();
                     var slugvalue1 = document.getElementById("id_slug").value = slug;
                     slugvalue.value = slug;
                 }

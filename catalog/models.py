@@ -115,6 +115,10 @@ class Product(models.Model):
         return reverse('catalog_product', (), {'product_slug': self.slug})"""
 
     @property
+    def category(self):
+        return self.categories
+
+    @property
     def sale_price(self):
         if self.old_price > self.price:
             return self.price

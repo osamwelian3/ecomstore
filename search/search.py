@@ -29,10 +29,14 @@ def products(search_text):
     for word in words:
         products = products.filter(Q(name__icontains=word) |
                                    Q(description__icontains=word) |
-                                   Q(sku__iexact=word) |
+                                   Q(sku__icontains=word) |
                                    Q(brand__icontains=word) |
                                    Q(meta_description__icontains=word) |
-                                   Q(meta_keywords__icontains=word))
+                                   Q(categories__name__icontains=word) |
+                                   Q(categories__id__icontains=word) |
+                                   Q(categories__meta_keywords__icontains=word) |
+                                   Q(categories__meta_description__icontains=word) |
+                                   Q(meta_keywords__icontains=word)).distinct()
         results['products'] = products
     return results
 

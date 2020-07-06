@@ -348,3 +348,40 @@ fieldset.my_account ul li{
 .circle:nth-child(6){
     animation-delay: 0.9s;
 }
+
+/* auto search */
+#slist {
+    list-style: none;
+    position: absolute;
+    padding: 0px;
+    top: 166px;
+    left: 109px;
+    border: solid black 1px;
+    background: aliceblue;
+
+}
+#pitem {
+    border: solid
+    black 1px;
+    text-align: center;
+    width: 119px;
+}
+#pitem:hover {
+    background: #98ac5e;
+}
+
+.pitem {
+    border: solid
+    black 1px;
+    text-align: center;
+    width: 139px;
+}
+.pitem:hover {
+    background: #98ac5e;
+}
+
+#btn {
+    background: #98ac5e;
+    border-radius: 15px;
+    width: 60px;
+}
