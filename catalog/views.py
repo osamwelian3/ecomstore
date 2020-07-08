@@ -7,10 +7,18 @@ from django.http import HttpResponseRedirect
 from .forms import ProductAddToCartForm
 from django.views.decorators.csrf import csrf_exempt
 from checkout.mpesa_processor import pending_checker
+from stats import stats
+from ecomstore.settings import PRODUCTS_PER_ROW
 
 
 # Create your views here.
 def index(request, template_name="catalog/index.html"):
+    search_recs = stats.recommended_from_search(request)
+    featured = Product.featured.all()[0:PRODUCTS_PER_ROW]
+    recently_viewed = stats.get_recently_viewed(request)
+    view_recs = stats.recommended_from_views(request)
+    all_view_recs = stats.recommended_from_all_views(request)
+    print(search_recs)
     page_title = 'Musical Instruments and Sheet Music for Musicians'
     context = {
         'page_title': page_title,
@@ -38,10 +46,12 @@ def show_category(request, category_slug, template_name="catalog/category.html")
 @csrf_exempt
 def show_product(request, product_slug, template_name="catalog/product.html"):
     p = get_object_or_404(Product, slug=product_slug)
+    stats.log_product_view(request, p)
     categories = p.categories.filter(is_active=True)
     page_title = p.name
     meta_keywords = p.meta_keywords
     meta_description = p.meta_description
+    # add to product view
     context = {
         'categories': categories,
         'page_title': page_title,

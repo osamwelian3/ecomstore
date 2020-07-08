@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'mpesa_api',
     'accounts',
     'search',
+    'stats',
     'django.contrib.flatpages',
     'django.contrib.sites',
     'sslserver',
@@ -199,3 +200,4 @@ C2B_URI = '/mpesa/c2b/v1/simulate'
 
 
 PRODUCTS_PER_PAGE = 12
+PRODUCTS_PER_ROW = 4

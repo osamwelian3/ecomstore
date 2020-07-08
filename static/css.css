@@ -113,7 +113,6 @@ div.product_thumbnail{
     text-align:center;
     float:left;
     width:150px;
-    height:200px;
 }
 
 /* Product page styles */
@@ -352,11 +351,11 @@ fieldset.my_account ul li{
 /* auto search */
 #slist {
     list-style: none;
-    position: absolute;
+    /*position: absolute;*/
     padding: 0px;
-    top: 166px;
-    left: 109px;
-    border: solid black 1px;
+    /*top: 166px;
+    left: 109px;*/
+    /*border: solid black 1px;*/
     background: aliceblue;
 
 }
@@ -371,10 +370,11 @@ fieldset.my_account ul li{
 }
 
 .pitem {
-    border: solid
-    black 1px;
+    border: solid black 1px;
     text-align: center;
-    width: 139px;
+    /*width: 139px;*/
+    border-bottom: 0.5px solid black;
+    border-top: 0px;
 }
 .pitem:hover {
     background: #98ac5e;
@@ -385,3 +385,17 @@ fieldset.my_account ul li{
     border-radius: 15px;
     width: 60px;
 }
+
+#id_q, #sss {
+    width: 150px;
+}
+#sss {
+    float: right;
+}
+#simage {
+    width: 20px;
+    height: 18px;
+    float: left;
+    padding: 0px;
+}
+

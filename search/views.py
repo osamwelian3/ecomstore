@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.template import RequestContext
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from search import search
@@ -55,8 +55,18 @@ def autosearch(request):
         # if data2 list is empty. first time in the loop, just add the data but don't increment count.
         else:
             data2.append(d)
+
+    testdata = data2.copy()
+    # html = '<ul id="slist" class="sf" style="list-style: none;">'
+    html = ''
+    for p in testdata:
+        html += '<li id="' + p['name'] + '" class="pitem"><img src="' + settings.MEDIA_URL + p['thumbnail'] + '" id="simage" /><label>' + p['name'] + '</label></li>'
+    # html += '</ul>'
+    print(html)
+
     data = data2
-    return JsonResponse(data, safe=False)
+    return HttpResponse(html)
+    # return JsonResponse(data, safe=False)
 
 
 def removeDuplicate(data):
