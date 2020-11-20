@@ -1,13 +1,43 @@
 {% extends "catalog.html" %}
 {% load search_tags %}
+{% load catalog_filters %}
 
 {% block content %}
+<!-- section -->
+<div class="section">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+            <!-- MAIN -->
+            <div id="main" class="col-md-12">
+                <!-- STORE -->
+
+                    <!-- row -->
+                    <div class="row">
     <h1>Search Results for: '{{ q }}'</h1>
     {% for p in results %}
-        {% include 'tags/product_thumbnail.html' %}
+        {% include 'tags/pages_product_thumbnail.html' %}
+        {% if forloop.counter|div:2 %}
+            <div class="clearfix visible-sm visible-xs"></div>
+        {% endif %}
+        {% if forloop.counter|div:4 %}
+            <div class="clearfix visible-md visible-lg"></div>
+        {% endif %}
+        {% if forloop.counter|div:4 %}
+            <div class="clearfix visible-sm visible-xs"></div>
+        {% endif %}
     {% empty %}
         No products were found matching those search terms.
     {% endfor %}
     <div class="cb">&nbsp;</div>
-    {% pagination_links request paginator %}
+
+                    </div>
+            </div>
+        </div>
+        <div class="row text-center">
+            {% pagination_links request paginator %}
+        </div>
+    </div>
+</div>
 {% endblock %}

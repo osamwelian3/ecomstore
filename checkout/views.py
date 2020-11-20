@@ -16,17 +16,27 @@ from accounts import profile
 # Create your views here.
 @csrf_exempt
 def show_checkout(request, checkout_type, template_name="checkout/checkout.html"):
-    print(request.POST.copy())
+    # print(request.POST.copy())
     # request1 = locals()
     # print(request1)
     print('ian')
-    print(request)
+    print(request.method)
+    error_message = ''
     if cart.is_empty(request):
         cart_url = reverse('show_cart')
         return HttpResponseRedirect(cart_url)
-    if request.method == 'POST' and request.POST.copy()['submit'] == "Mpesa Payment":
+    if request.method == 'POST' and request.POST.copy()['payment'] == "Mpesa Payment" or request.method == 'POST' and\
+            request.POST.copy()['phone2'] != '' and request.POST.copy()['credit_card_number'] == '' and\
+            request.POST.copy()['credit_card_cvv'] == '':
         postdata = request.POST.copy()
-        form = MpesaCheckoutForm(postdata)
+        postdata['billing_name'] = postdata['shipping_name']
+        postdata['billing_address_1'] = postdata['shipping_address_1']
+        postdata['billing_address_2'] = postdata['shipping_address_2']
+        postdata['billing_city'] = postdata['shipping_city']
+        postdata['billing_zip'] = postdata['shipping_zip']
+        postdata['billing_country'] = postdata['shipping_country']
+        postdata['payment'] = postdata['payment']
+        form = CheckoutForm(postdata)
         if form.is_valid():
             response = mpesa_processor.process(request)
             order_number = response.get('order_number', 0)
@@ -41,9 +51,32 @@ def show_checkout(request, checkout_type, template_name="checkout/checkout.html"
                 return HttpResponseRedirect(receipt_url)
         else:
             error_message = "Correct the errors below"
-    if request.method == 'POST' and request.POST.copy()['submit'] == "Place Order":
+    if request.method == 'POST' and request.POST.copy()['payment'] == "Place Order" or request.method == 'POST' and\
+            request.POST.copy()['credit_card_number'] != '' and request.POST.copy()['credit_card_cvv'] != '' and\
+            request.POST.copy()['phone2'] == '':
         postdata = request.POST.copy()
+        if 'billing' in request.POST.copy():
+            if postdata['billing_name'] == '':
+                error_message = 'Input billing name'
+            if postdata['billing_address_1'] == '':
+                error_message = 'Input billing address'
+            if postdata['billing_city'] == '':
+                error_message = 'Input billing city'
+            if postdata['billing_zip'] == '':
+                error_message = 'Input billing zip/postal code'
+            if postdata['billing_country'] == '':
+                error_message = 'Input billing country'
+        if not 'billing' in request.POST.copy():
+            postdata['billing_name'] = postdata['shipping_name']
+            postdata['billing_address_1'] = postdata['shipping_address_1']
+            postdata['billing_address_2'] = postdata['shipping_address_2']
+            postdata['billing_city'] = postdata['shipping_city']
+            postdata['billing_zip'] = postdata['shipping_zip']
+            postdata['billing_country'] = postdata['shipping_country']
         form = CheckoutForm(postdata)
+        # print(postdata)
+        # print(form)
+        # print("frm")
         if form.is_valid():
             response = checkout.process(request)
             order_number = response.get('order_number', 0)
@@ -72,9 +105,19 @@ def show_checkout(request, checkout_type, template_name="checkout/checkout.html"
 
         if request.method == 'POST' and checkout_type == "Lipa":
             postdata = request.POST.copy()
-            form = MpesaCheckoutForm(postdata)
+            # print(postdata)
+            form = CheckoutForm(postdata)
+            # print(request.POST.copy()['payment'])
+            if request.POST.copy()['payment'] == 'on' and postdata['phone2'] == '' and postdata['credit_card_number']\
+                    == '' and postdata['credit_card_cvv'] == '':
+                empty1 = 'Please select payment method'
+                error_message = 'Correct the errors below'
+            if request.POST.copy()['payment'] == 'on' and postdata['phone2'] != '' and postdata['credit_card_number']\
+                    != '' or postdata['credit_card_cvv'] != '':
+                empty1 = 'Please select payment method'
+                error_message = 'Correct the errors below'
         if request.GET and checkout_type == "Lipa":
-            form = MpesaCheckoutForm()
+            form = CheckoutForm()
             """if request.method == 'POST' and checkout_type == "Lipa":
                 postdata = request.POST.copy()
                 form = MpesaCheckoutForm(postdata)
@@ -83,6 +126,8 @@ def show_checkout(request, checkout_type, template_name="checkout/checkout.html"
             if request.GET and checkout_type == "PendingLipa":
                 form = MpesaCheckoutForm()"""
     page_title = 'Checkout'
+    cart_items = cart.get_cart_items(request)
+    cart_subtotal = cart.cart_subtotal(request)
     checkout_type = checkout_type
     return render(request, template_name, locals(), RequestContext(request))
 
@@ -91,6 +136,7 @@ def receipt(request, template_name='checkout/receipt.html'):
     order_number = request.session.get('order_number', '')
     if order_number:
         order = Order.objects.filter(id=order_number)[0]
+        order_status = dict(order.ORDER_STATUSES)[order.status]
         order_items = OrderItem.objects.filter(order=order)
         del request.session['order_number']
     else:

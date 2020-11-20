@@ -4,6 +4,7 @@
     <h1>My Account</h1>
     <strong>Welcome, {{ name|capfirst }}!</strong>
     <br /><br />
+    <p class="bg-black primary-color">{{ success }}</p>
     <fieldset class="my_account">
         <legend>Order History</legend>
         {% for order in orders %}

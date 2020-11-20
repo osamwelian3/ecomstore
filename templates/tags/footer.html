@@ -1,7 +1,125 @@
-<a href="{% url 'catalog_home' %}">Home</a>
+{% load static %}
+<!--<a href="{% url 'catalog_home' %}">Home</a>
 {% with flatpage_list as pages %}
     {% for page in pages %}
         <a href="{{ page.url }}">{{ page.title }}</a>
     {% endfor %}
 {% endwith %}
 <a href="{% url 'show_cart' %}">Shopping Cart</a>
+<a href="{% url 'tag_cloud' %}">Tag Cloud</a>-->
+
+
+
+
+	<!-- FOOTER -->
+	<footer id="footer" class="section section-grey">
+		<!-- container -->
+		<div class="container">
+			<!-- row -->
+			<div class="row">
+				<!-- footer widget -->
+				<div class="col-md-3 col-sm-6 col-xs-6">
+					<div class="footer">
+						<!-- footer logo -->
+						<div class="footer-logo">
+							<a class="logo" href="{% url 'catalog_home' %}">
+		            <img src="{% static './img/logo.png' %}" alt="">
+		          </a>
+						</div>
+						<!-- /footer logo -->
+
+						<p>Ezinet mall is your number one online shop for all your shopping needs. Shop on ezinet for Timely delivery, Free shipping and quality products</p>
+
+						<!-- footer social -->
+						<ul class="footer-social">
+							<li><a href="#"><i class="fa fa-facebook"></i></a></li>
+							<li><a href="#"><i class="fa fa-twitter"></i></a></li>
+							<li><a href="#"><i class="fa fa-instagram"></i></a></li>
+							<li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+							<li><a href="#"><i class="fa fa-pinterest"></i></a></li>
+						</ul>
+						<!-- /footer social -->
+					</div>
+				</div>
+				<!-- /footer widget -->
+
+				<!-- footer widget -->
+				<div class="col-md-3 col-sm-6 col-xs-6">
+					<div class="footer">
+						<h3 class="footer-header">My Account</h3>
+						<ul class="list-links">
+							<li><a href="{% url 'my_account' %}">My Account</a></li>
+							<li><a href="#">My Wishlist</a></li>
+							<li><a href="#">Compare</a></li>
+							<li><a href="{% url 'show_cart' %}">Cart</a></li>
+							<li><a href="{% url 'login' %}">Login</a></li>
+                            {% with flatpage_list as pages %}
+                                {% for page in pages %}
+                                    <li><a href="{{ page.url }}">{{ page.title }}</a></li>
+                                {% endfor %}
+                            {% endwith %}
+						</ul>
+					</div>
+				</div>
+				<!-- /footer widget -->
+
+				<div class="clearfix visible-sm visible-xs"></div>
+
+				<!-- footer widget -->
+				<div class="col-md-3 col-sm-6 col-xs-6">
+					<div class="footer">
+						<h3 class="footer-header">Customer Service</h3>
+						<ul class="list-links">
+							<li><a href="#">About Us</a></li>
+							<li><a href="#">Shiping & Return</a></li>
+							<li><a href="#">Shiping Guide</a></li>
+							<li><a href="#">FAQ</a></li>
+                            <li><a href="{% url 'tag_cloud' %}">Tag Cloud</a></li>
+						</ul>
+					</div>
+				</div>
+				<!-- /footer widget -->
+
+				<!-- footer subscribe -->
+				<div class="col-md-3 col-sm-6 col-xs-6">
+					<div class="footer">
+						<h3 class="footer-header">Stay Connected</h3>
+						<p>Subscribe to our Newsletters to receive news on the latest products, super deals and promotions on Ezinet Mall.</p>
+						<form>
+							<div class="form-group">
+								<input class="input" placeholder="Enter Email Address">
+							</div>
+							<button class="primary-btn">Join Newsletter</button>
+						</form>
+					</div>
+				</div>
+				<!-- /footer subscribe -->
+			</div>
+			<!-- /row -->
+			<hr>
+			<!-- row -->
+			<div class="row">
+				<div class="col-md-8 col-md-offset-2 text-center">
+					<!-- footer copyright -->
+					<div class="footer-copyright">
+						<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+						Copyright &copy;<script>document.write(new Date().getFullYear());</script> Ezinet Mall | All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+						<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+					</div>
+					<!-- /footer copyright -->
+				</div>
+			</div>
+			<!-- /row -->
+		</div>
+		<!-- /container -->
+	</footer>
+	<!-- /FOOTER -->
+
+
+
+
+
+
+
+
+

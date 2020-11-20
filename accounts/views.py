@@ -36,6 +36,8 @@ def my_account(request, template_name="registration/my_account.html"):
     page_title = 'My Account'
     orders = Order.objects.filter(user=request.user)
     name = request.user.username
+    if request.GET.get('q', '') == 'success':
+        success = 'Information saved successfully.'
     return render(request, template_name, locals(), RequestContext(request))
 
 
@@ -55,7 +57,7 @@ def order_info(request, template_name="registration/order_info.html"):
         if form.is_valid():
             profile.set(request)
             url = reverse('my_account')
-            return HttpResponseRedirect(url)
+            return HttpResponseRedirect(url + '?q=success')
     else:
         user_profile = profile.retrieve(request)
         form = UserProfileForm(instance=user_profile)

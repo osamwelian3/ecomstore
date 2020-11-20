@@ -2,7 +2,7 @@
 {% load catalog_filters %}
 
 {% block content %}
-    <table summary="Your Shopping Cart" id="shopping_cart">
+    <!--<table summary="Your Shopping Cart" id="shopping_cart">
     <caption>Your Shopping Cart</caption>
         <thead>
             <tr>
@@ -31,7 +31,7 @@
                         <input type="submit" name="submit" value="Card Checkout" alt="Checkout" />
                         <!--<input type="image" name="Google Checkout" alt="Fast checkout through Google"
                         src="http://sandbox.google.com/checkout/buttons/checkout.gif?merchant_id={{ merchant_id }}
-                        &w=180&h=46&style=white&variant=text&loc=en_US" height="46" width="180" />-->
+                        &w=180&h=46&style=white&variant=text&loc=en_US" height="46" width="180" />-\->
                     </form>
                     </th>
                 </tr>
@@ -85,5 +85,50 @@
             </tr>
         {% endif %}
         </tbody>
-    </table>
+    </table>-->
+
+
+	<!-- section -->
+	<div class="section">
+		<!-- container -->
+		<div class="container">
+			<!-- row -->
+			<div id="cart-row" class="row">
+				<input id="page_title" type="hidden" value="{{ page_title }}">
+				<div id="cart-div">
+				{% include 'cart/cart_preview.html' %}
+				</div>
+			</div>
+			<!-- /row -->
+		</div>
+		<!-- /container -->
+	</div>
+	<!-- /section -->
+
+	<!-- section -->
+	<div class="section">
+		<!-- container -->
+		<div class="container">
+			<!-- row -->
+			<div class="row">
+				<!-- section title -->
+				<div class="col-md-12">
+					<div class="section-title">
+						<h2 class="title">You May Like</h2>
+					</div>
+				</div>
+				<!-- section title -->
+
+				{% for p in recent_views %}
+				<!-- Product Single -->
+				{% include 'tags/pages_product_thumbnail.html' %}
+				<!-- /Product Single -->
+				{% endfor %}
+			</div>
+			<!-- /row -->
+		</div>
+		<!-- /container -->
+	</div>
+	<!-- /section -->
+
 {% endblock %}

@@ -1,7 +1,50 @@
-<div class="product_thumbnail">
+{% load catalog_filters %}
+<!--<div class="product_thumbnail">
     <a href="{{ p.get_absolute_url }}">
         <img src="{{ p.thumbnail.url }}" alt="{{ p.name }}" class="bn" />
         <br />
         {{ p.name }}
     </a>&nbsp;
+</div>-->
+
+
+<!-- Product Single -->
+<div class="col-md-4 col-sm-6 col-xs-6">
+    <div class="product product-single">
+        <div class="product-thumb">
+            <div class="product-label">
+                <span>New</span>
+                <span class="sale">-20%</span>
+            </div>
+            <a href="{{ p.get_absolute_url }}"><button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button></a>
+            <img src="{{ p.image.url }}" alt="">
+        </div>
+        <div class="product-body">
+            <h3 class="product-price">{{ p.price|currency }} <br /><del class="product-old-price">{{ p.old_price|currency }}</del></h3>
+            <div class="product-rating">
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star-o empty"></i>
+            </div>
+            <h2 class="product-name"><a href="#">{{ p.name }}</a></h2>
+            <div class="product-btns">
+                <button class="main-btn icon-btn"><i class="fa fa-heart"></i></button>
+                <button class="main-btn icon-btn"><i class="fa fa-exchange"></i></button>
+                <form method="post" action="{% url 'catalog_product' p.slug %}" class="cart">
+                    {% csrf_token %}
+                    {{ form.non_field_errors }}
+                    <input class="input" type="hidden" name="quantity" size="2" value="1" class="quantity" max_length="5" required="" id="id_quantity">
+                    {{ form.quantity.errors }}
+                    <input type="hidden" name="product_slug" value="{{ p.slug }}" id="id_product_slug">
+                    <input type="hidden" value="Add to Cart" name="submit" alt="Add to Cart" />
+                    <button type="submit" class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
+<!-- /Product Single -->
+
+

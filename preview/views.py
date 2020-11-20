@@ -23,7 +23,7 @@ def uploadproduct(request, template_name="test_upload.html"):
         form = ProductCreationForm(postdata, images)
         if form.is_valid():
             form.save()
-            url = reverse('upload')
+            url = reverse('catalog_product', args=[postdata['slug'], ])
             return HttpResponseRedirect(url)
     page_title = 'Upload Product'
     return render(request, template_name, locals())

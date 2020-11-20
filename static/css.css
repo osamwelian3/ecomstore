@@ -399,3 +399,92 @@ fieldset.my_account ul li{
     padding: 0px;
 }
 
+#add_review{
+cursor:pointer;
+}
+.hidden{display:none;}
+.visible{display:block;}
+.new_review{background-color:Pink;}
+
+#tags a{
+color:DarkOrange;
+}
+
+/* rating */
+.txt-center {
+  text-align: center;
+}
+.hide {
+  display: none;
+}
+
+.clear {
+  float: none;
+  clear: both;
+}
+
+.rating {
+    width: 90px;
+    unicode-bidi: bidi-override;
+    direction: rtl;
+    text-align: center;
+    position: relative;
+}
+
+.rating > label {
+    float: right;
+    display: inline;
+    padding: 0;
+    margin: 0;
+    position: relative;
+    width: 1.1em;
+    cursor: pointer;
+    color: #000;
+}
+
+.rating > label:hover,
+.rating > label:hover ~ label,
+.rating > input.radio-btn:checked ~ label {
+    color: transparent;
+}
+
+.rating > label:hover:before,
+.rating > label:hover ~ label:before,
+.rating > input.radio-btn:checked ~ label:before,
+.rating > input.radio-btn:checked ~ label:before {
+    content: "\2605";
+    position: absolute;
+    left: 0;
+    color: #FFD700;
+}
+
+#loading{
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 45%;
+    background-color: Pink;
+    width: 200px;
+    font-size: medium;
+    color: Black;
+    font-weight: bold;
+    padding: 2px;
+    border: solid 1px Red;
+    text-align: center;
+    z-index: 100;
+}
+
+#noscript{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: Red;
+    color: White;
+    font-weight: bold;
+    padding: 5px;
+    text-align: center;
+}
+#noscript_padder{
+    height: 30px;
+}

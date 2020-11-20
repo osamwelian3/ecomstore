@@ -1,5 +1,5 @@
 from django import forms
-from .models import Product
+from .models import Product, ProductReview
 
 
 class ProductAdminForm(forms.ModelForm):
@@ -30,3 +30,9 @@ class ProductAddToCartForm(forms.Form):
             if not self.request.session.test_cookie_worked():
                 raise forms.ValidationError("Cookies must be enabled.")
         return self.cleaned_data
+
+
+class ProductReviewForm(forms.ModelForm):
+    class Meta:
+        model = ProductReview
+        exclude = ('user', 'product', 'is_approved')

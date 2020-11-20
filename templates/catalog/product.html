@@ -2,51 +2,269 @@
 {% load catalog_filters %}
 
 {% block content %}
-    <div class="product_image" style="background-image: url({{ p.image.url }});">
-        <img src="{{ p.image.url }}" alt="{{ p.name }}" class="pimage"/>
-        <p class="pcaption">{{ p.image_caption }}</p>
-    </div>
-    <div class="pright">
-    <h1>{{ p.name }}</h1>
-    Brand: <em>{{ p.brand }}</em>
-    <br /><br />
-    SKU: {{ p.sku }}
-    <br />
-    In categor{{ categories.count|pluralize:"y,ies" }}:
-        {% for c in categories %}
-    <a href="{{ c.get_absolute_url }}">{{ c.name }}</a>
-    {% if not forloop.last %}, {% endif %}
-        {% endfor %}
-        <br /><br />
-    {% if p.sale_price %}
-        Was: <del>{{ p.old_price|currency }}</del>
-        <br />
-        Now: {{ p.price|currency }}
-    {% else %}
-        Price: {{ p.price|currency }}
-    {% endif %}
-    <br /><br />
-    <form method="post" action="." class="cart">
-        {% csrf_token %}
-        {{ form.non_field_errors }}
-        <label for="id_quantity">Quantity:</label>
-        {{ form.quantity }}
-        {{ form.quantity.errors }}
-        {{ form.product_slug }}
-        <br />
-        <input type="submit" value="Add to Cart" name="submit" alt="Add to Cart" />
-    </form>
-    </div>
-    <br />
-    <!--<div class="cb"><br /><br /></div>-->
-    <h3>Related Products</h3>
-        {% for p in p.cross_sells_hybrid %}
-            {% include 'tags/product_thumbnail.html' %}
-        {% empty %}
-            No related products.
-        {% endfor %}
-    <div class="cs">
-        <h3>Product Description</h3>
-        {{ p.description }}
-    </div>
+<!-- New -->
+
+	<!-- section -->
+	<div class="section">
+		<!-- container -->
+		<div class="container">
+			<!-- row -->
+			<div class="row">
+				<!--  Product Details -->
+				<div class="product product-details clearfix">
+					<div class="col-md-6">
+						<div id="product-main-view">
+							<div class="product-view">
+								<img src="{{ p.image.url }}" alt="">
+							</div>
+							<div class="product-view">
+								<img src="{{ p.image.url }}" alt="">
+							</div>
+							<div class="product-view">
+								<img src="{{ p.image.url }}" alt="">
+							</div>
+							<div class="product-view">
+								<img src="{{ p.image.url }}" alt="">
+							</div>
+						</div>
+						<div id="product-view">
+							<div class="product-view">
+								<img src="{{ p.image.url }}" alt="">
+							</div>
+							<div class="product-view">
+								<img src="{{ p.image.url }}" alt="">
+							</div>
+							<div class="product-view">
+								<img src="{{ p.image.url }}" alt="">
+							</div>
+							<div class="product-view">
+								<img src="{{ p.image.url }}" alt="">
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="product-body">
+							<div class="product-label">
+								<span>New</span>
+								<span class="sale">-20%</span>
+							</div>
+							<h2 class="product-name">{{ p.name }}</h2>
+                            {% if p.sale_price %}
+                                <h3 class="product-price">{{ p.price|currency }} <br /><del class="product-old-price">{{ p.old_price|currency }}</del></h3>
+                            {% else %}
+                                <h3 class="product-price">{{ p.price|currency }}</h3>
+                            {% endif %}
+							<div>
+								<div class="product-rating">
+									<i class="fa fa-star"></i>
+									<i class="fa fa-star"></i>
+									<i class="fa fa-star"></i>
+									<i class="fa fa-star"></i>
+									<i class="fa fa-star-o empty"></i>
+								</div>
+                                <a data-toggle="tab" href="#tab3" id="tab-3"><span id="r_count">{{ reviews_count }}</span> Review(s) / Add Review</a>
+							</div>
+                            <p><strong>Categories:</strong>
+                                {% for c in categories %}
+                                    <a href="{{ c.get_absolute_url }}">{{ c.name }}</a>
+                                    {% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            </p>
+                            {% if p.quantity > 0 %}
+							<p><strong>Availability:</strong> {{ p.quantity }} In Stock</p>
+                            {% else %}
+                            <p><strong>Availability:</strong> Pre-Order</p>
+                            {% endif %}
+							<p><strong>Brand:</strong> {{ p.brand }}</p>
+                            {% if not p.tags %}
+                            <p class="tag-list"><strong>Tags: </strong><span id="tags"></span></p>
+                            {% endif %}
+                            {% if p.tags %}
+                            <p><strong>Tags:</strong>
+                                <span id="tags">
+                                {% for tag in p.tags %}
+                                    {% include 'catalog/tag_link.html' %}
+                                {% endfor %}
+                                </span>
+                            </p><!-- Will put tags here instead -->
+                            {% endif %}
+							<!--<div class="product-options">
+								<ul class="size-option">
+									<li><span class="text-uppercase">Size:</span></li>
+									<li class="active"><a href="#">S</a></li>
+									<li><a href="#">XL</a></li>
+									<li><a href="#">SL</a></li>
+								</ul>
+								<ul class="color-option">
+									<li><span class="text-uppercase">Color:</span></li>
+									<li class="active"><a href="#" style="background-color:#475984;"></a></li>
+									<li><a href="#" style="background-color:#8A2454;"></a></li>
+									<li><a href="#" style="background-color:#BF6989;"></a></li>
+									<li><a href="#" style="background-color:#9A54D8;"></a></li>
+								</ul>
+							</div>-->
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+
+							<div class="product-btns">
+								<div class="qty-input">
+                                    <form method="post" action="." class="cart">
+                                        {% csrf_token %}
+                                        {{ form.non_field_errors }}
+                                        <span class="text-uppercase">QTY: </span>
+                                        <input class="input" type="number" name="quantity" size="2" value="1" class="quantity" max_length="5" required="" id="id_quantity">
+                                        {{ form.quantity.errors }}
+                                        {{ form.product_slug }}
+                                        <input type="hidden" value="Add to Cart" name="submit" alt="Add to Cart" />
+                                        <button type="submit" class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
+                                    </form>
+								</div>
+								<!--<button class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> Add to Cart</button>-->
+								<div class="pull-right">
+									<button class="main-btn icon-btn"><i class="fa fa-heart"></i></button>
+									<button class="main-btn icon-btn"><i class="fa fa-exchange"></i></button>
+									<button class="main-btn icon-btn"><i class="fa fa-share-alt"></i></button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-12">
+						<div class="product-tab">
+							<ul class="tab-nav">
+								<li class="active"><a data-toggle="tab" href="#tab1">Description</a></li>
+								<li><a data-toggle="tab" href="#tab1">Details</a></li>
+                                <li id="reviews-tab"><a data-toggle="tab" href="#tab3">Reviews (<span id="r_count1">{{ reviews_count }}</span>)</a></li>
+                                <li><a data-toggle="tab" href="#tab4">Add Tag</a></li>
+							</ul>
+							<div class="tab-content">
+								<div id="tab1" class="tab-pane fade in active">
+									<p>{{ p.description }}</p>
+								</div>
+								<div id="tab3" class="tab-pane fade in">
+
+									<div class="row">
+										<div class="col-md-6">
+											<div class="product-reviews" id="reviews">
+                                                    {% include 'catalog/product_review_paginated.html' %}
+											</div>
+										</div>
+										<div class="col-md-6">
+                                            {% if review_form == 'exists' %}
+                                            <h4>You had already reviewed this product...</h4>
+                                            {% else %}
+											<h4 class="text-uppercase" id="rr">Write Your Review</h4>
+                                            {% if request.user.is_authenticated %}
+                                            <a id="add_review">Write a Review</a>
+                                            <div id="review_form">
+											<form class="review-form">
+                                                <div id="review_errors"></div>
+                                                <input id="reviewcsrf" type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+												<div class="form-group">
+													<input class="input" id="id_title" type="text" placeholder="Review Title" />
+												</div>
+												<div class="form-group">
+													<textarea class="input" id="id_content" placeholder="Your review"></textarea>
+												</div>
+												<div class="form-group">
+													<div class="input-rating">
+														<strong class="text-uppercase">Your Rating: </strong>
+														<div class="stars" id="rating">
+                                                            <input id="id_rating" type="hidden" value="5" />
+															<input type="radio" id="star5" name="rating" value="5" /><label for="star5"></label>
+															<input type="radio" id="star4" name="rating" value="4" /><label for="star4"></label>
+															<input type="radio" id="star3" name="rating" value="3" /><label for="star3"></label>
+															<input type="radio" id="star2" name="rating" value="2" /><label for="star2"></label>
+															<input type="radio" id="star1" name="rating" value="1" /><label for="star1"></label>
+														</div>
+													</div>
+												</div>
+                                                <input type="hidden" id="id_slug" value="{{ p.slug }}">
+                                                <input type="hidden" id="submit_review1" value="Submit">
+                                                <input type="hidden" id="cancel_review1" value="Cancel">
+											</form>
+                                            <button id="submit_review" type="submit" class="primary-btn">Submit</button>
+                                            <button id="cancel_review" type="submit" class="primary-btn">Cancel</button>
+                                            </div>
+                                            {% else %}
+                                                <a href="{% url 'login' %}?next={{ request.path }}#rr">
+                                                    Log in to write your own review.
+                                                </a>
+                                            {% endif %}
+                                            {% endif %}
+										</div>
+									</div>
+
+
+
+								</div>
+                                <div id="tab4" class="tab-pane fade in">
+									{% if request.user.is_authenticated %}
+                                    <label for="id_tag">Tag this product <span id="tag-error"></span>:</label>
+                                        <br />
+                                        <input id="tagcsrf" type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                                        <input class="input tag-input" id="id_tag" type="text" />
+                                        <input id="id_slug" type="hidden" value="{{ p.slug }}" />
+                                        <input id="add_tag3" type="hidden" value="Tag It" />
+                                        <button class="btn btn-success" id="add_tag" type="submit">Tag</button>
+                                    {% else %}
+                                        <a href="{% url 'login' %}?next={{ request.path }}">
+                                            Log in to tag this product.
+                                        </a>
+                                    {% endif %}
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<!-- /Product Details -->
+			</div>
+			<!-- /row -->
+		</div>
+		<!-- /container -->
+	</div>
+	<!-- /section -->
+
+
+	<!-- section -->
+	<div class="section">
+		<!-- container -->
+		<div class="container">
+			<!-- row -->
+			<div class="row">
+				<!-- section title -->
+				<!--<div class="col-md-12">
+					<div class="section-title">
+						<h2 class="title">Picked For You</h2>
+					</div>
+				</div>-->
+				<!-- section title -->
+
+                {% for p in p.cross_sells_hybrid %}
+                {% if forloop.first %}
+                <!-- section title -->
+				<div class="col-md-12">
+					<div class="section-title">
+						<h2 class="title">Picked For You</h2>
+					</div>
+				</div>
+				<!-- section title -->
+                {% endif %}
+                <!-- Product Single -->
+				{% include 'tags/pages_product_thumbnail.html' %}
+				<!-- /Product Single -->
+                {% empty %}
+                <!-- something else -->
+                {% endfor %}
+			</div>
+			<!-- /row -->
+		</div>
+		<!-- /container -->
+	</div>
+	<!-- /section -->
+
+
+
 {% endblock %}

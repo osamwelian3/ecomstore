@@ -1,17 +1,36 @@
 {% extends "catalog.html" %}
 
 {% block content %}
-    <form action="." method="post">
+    <div class="container">
+    <div class="row pb-5">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+    <form method="post" action="{% url 'register' %}">
         {% csrf_token %}
-        <table summary="Register" id="register">
-        <caption>Sign Up For Your Account</caption>
-        {{ form.as_table }}
-        <tr>
-            <th></th>
-            <td>
-                <input type="submit" name="submit" value="Register" />
-            </td>
-        </tr>
-        </table>
+        <h3 class="text-center"><i class="fa fa-user round-icon"></i><br /> Sign up for your account </h3>
+        {% if form.errors %}
+        <ul class="errorlist">
+            <li>{{ form.username.errors }}</li>
+            <li>{{ form.password1.errors }}</li>
+            <li>{{ form.password2.errors }}</li>
+        </ul>
+        <br />
+        {% endif %}
+        {{ form.username.errors }}
+        <input class="input" type="text" name="username" maxlength="150" autofocus="" required="" id="id_username" placeholder="Username">
+        <span class="helptext">{{ form.username.help_text }}</span>
+        {{ form.password1.errors }}
+        <input class="input" type="password" name="password1" required="" id="id_password1" placeholder="Password">
+        <span class="helptext"><ul><li>{{ form.password1.help_text }}</li></ul></span>
+        {{ form.password2.errors }}
+        <input class="input" type="password" name="password2" required="" id="id_password2" placeholder="Confirm_Password">
+        <span class="helptext">{{ form.password2.help_text }}</span>
+
+        <p class="text-center pt-5"><input class="btn primary-btn" type="submit" value="Register" /></p>
+        <input type="hidden" name="next" value="{{ next }}" />
     </form>
+             </div>
+        <div class="col-md-4"></div>
+    </div>
+</div>
 {% endblock %}

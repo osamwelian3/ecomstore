@@ -1,8 +1,9 @@
 {% extends "catalog.html" %}
 {% load catalog_filters %}
+{% load static %}
 
 {% block content %}
-    <table id="receipt">
+    <!--<table id="receipt">
         <caption>Your order has been placed!<br /><br />
             Your Order Number is: {{ order.id }}
         </caption>
@@ -31,5 +32,118 @@
         </tr>
         {% endfor %}
         </tbody>
-    </table>
+    </table>-->
+
+
+
+<div class="col-xs-12 hidden-sm hidden-md hidden-lg hidden-xl">
+    <div class="section-titl">
+        <h3 class="title">Your Order has been successfully submitted</h3>
+        <h4 class="title">Your order number is: {{ order.id }}</h4>
+    </div>
+    <div class="section-title">
+            <h3 class="title">Order Receipt</h3>
+    </div>
+    <div id="shopping-cart">
+        <div class="shopping-cart-list2 noscroll">
+            {% if order_items %}
+            {% for item in order_items %}
+            <div class="product product-widget">
+                <div class="product-thumb">
+                    <img src="{{ item.product.image.url }}" alt="">
+                </div>
+                <div class="product-body">
+                        <h3 class="product-price cart-price">{{ item.price|currency }} <span class="qty">x{{ item.quantity }}</span></h3>
+                        <h3 class="cart-price">{{ item.total|currency }}</h3>
+                        <h3 class="product-name"><a href="{{ item.get_absolute_url }}">{{ item.name }}</a></h3>
+                </div>
+            </div>
+            {% if not forloop.last %}
+            <hr />
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+            {% if order_items %}
+            <hr />
+            <div class="subtotal">
+                <h3 class="subtotal"> Status |   <span class="ttl primary-color">{{ order_status }}</span></h3>
+                <h3 class="subtotal"> Total |   <span class="ttl primary-color">{{ order.total| currency }}</span></h3>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<div class="col-md-12 hidden-xs">
+    <div class="order-summary clearfix">
+        <div class="section-titl">
+            <h3 class="title">Your Order has been successfully submitted</h3>
+            <h4 class="title">Your order number is: {{ order.id }}</h4>
+        </div>
+        <div class="section-title">
+            <h3 class="title">Order Receipt</h3>
+        </div>
+        <div class="table-responsiv">
+        <table class="shopping-cart-table table">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th></th>
+                    <th scope="col" class="text-center">Price</th>
+                    <th scope="col" class="text-center">Quantity</th>
+                    <th scope="col" class="text-center">Total</th>
+                    <th scope="col" class="text-right"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if order_items %}
+                {% for item in order_items %}
+                <tr>
+                    <td scope="row" class="thumb"><img src="{{ item.product.image.url }}" alt=""></td>
+                    <td scope="row" class="details">
+                        <a href="{% url 'catalog_product' item.product.slug %}">{{ item.name }} </a>
+                        <ul class="hidden">
+                            <li><span>Size: XL</span></li>
+                            <li><span>Color: Camelot</span></li>
+                        </ul>
+                    </td>
+                    <td scope="row" class="price text-center"><strong>{{ item.price|currency }}</strong></td>
+                    <td scope="row" class="qty text-center"><span class="qty">{{ item.quantity }}</span></td>
+                    <td scope="row" class="total text-center"><strong class="primary-color">{{ item.total|currency }}</strong></td>
+                    <td scope="row" class="text-right">
+
+                    </td>
+                </tr>
+                {% endfor %}
+                {% endif %}
+            </tbody>
+            <tfoot>
+                {% if order_items %}
+                <tr>
+                    <th class="empty" colspan="3"></th>
+                    <th>STATUS</th>
+                    <th colspan="2" class="sub-total">{{ order_status }}</th>
+                </tr>
+                <tr>
+                    <th class="empty" colspan="3"></th>
+                    <th>TOTAL</th>
+                    <th colspan="2" class="total">{{ order.total|currency }}</th>
+                </tr>
+                {% endif %}
+            </tfoot>
+        </table>
+        </div>
+    </div>
+
+</div>
+{% if page_title == 'Receipt' %}
+{% if not order_items %}
+<script>
+	{{ reload }}
+</script>
+{% endif %}
+{% endif %}
+<script src="{% static 'js/script.js' %}"></script>
+
+
+
 {% endblock %}

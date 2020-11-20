@@ -1,0 +1,65 @@
+<!--<div class="review">
+    Rating: {{ review.rating }}
+    <strong>{{ review.title }}</strong>
+    by {{ review.user.username }}
+    <br />
+    {{ review.content }}
+    <br /><br />
+    <hr />
+</div>-->
+
+<div class="single-review" id="review{{ review.id }}">
+    <div class="review-heading">
+        <div><a href="#review{{ review.id }}"><i class="fa fa-user-o"></i> {{ review.user.username }}</a></div>
+        <div><a href="#review{{ review.id }}"><i class="fa fa-clock-o"></i> {{ review.date }} <!--27 DEC 2017 / 8:0 PM--></a></div>
+        {% if review.rating == 1 %}
+        <div class="review-rating pull-right">
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star-o empty"></i>
+            <i class="fa fa-star-o empty"></i>
+            <i class="fa fa-star-o empty"></i>
+            <i class="fa fa-star-o empty"></i>
+        </div>
+        {% endif %}
+        {% if review.rating == 2 %}
+        <div class="review-rating pull-right">
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star-o empty"></i>
+            <i class="fa fa-star-o empty"></i>
+            <i class="fa fa-star-o empty"></i>
+        </div>
+        {% endif %}
+        {% if review.rating == 3 %}
+        <div class="review-rating pull-right">
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star-o empty"></i>
+            <i class="fa fa-star-o empty"></i>
+        </div>
+        {% endif %}
+        {% if review.rating == 4 %}
+        <div class="review-rating pull-right">
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star-o empty"></i>
+        </div>
+        {% endif %}
+        {% if review.rating == 5 %}
+        <div class="review-rating pull-right">
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+        </div>
+        {% endif %}
+    </div>
+    <div class="review-body">
+        <h6>{{ review.title }}</h6>
+        <p>{{ review.content }}</p>
+    </div>
+</div>

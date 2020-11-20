@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'accounts',
     'search',
     'stats',
+    'tagging',
     'django.contrib.flatpages',
     'django.contrib.sites',
     'sslserver',
@@ -199,5 +200,5 @@ QUERYSTK = '/mpesa/stkpushquery/v1/query'
 C2B_URI = '/mpesa/c2b/v1/simulate'
 
 
-PRODUCTS_PER_PAGE = 12
+PRODUCTS_PER_PAGE = 1
 PRODUCTS_PER_ROW = 4

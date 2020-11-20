@@ -43,6 +43,28 @@ def products(search_text):
     return results
 
 
+# get products matching the search text
+def products2(search_text, cat):
+    words = _prepare_words(search_text)
+    products = Product.active.filter(categories=cat)
+    results = {}
+    results['products'] = []
+    # iterate through keywords
+    for word in words:
+        products = products.filter(Q(name__icontains=word) |
+                                   Q(description__icontains=word) |
+                                   Q(sku__icontains=word) |
+                                   Q(brand__icontains=word) |
+                                   Q(meta_description__icontains=word) |
+                                   Q(categories__name__icontains=word) |
+                                   Q(categories__id__icontains=word) |
+                                   Q(categories__meta_keywords__icontains=word) |
+                                   Q(categories__meta_description__icontains=word) |
+                                   Q(meta_keywords__icontains=word)).distinct()
+        results['products'] = products
+    return results
+
+
 # strip out common words, limit to 5 words
 def _prepare_words(search_text):
     words = search_text.split()

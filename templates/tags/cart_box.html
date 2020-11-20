@@ -1,9 +1,71 @@
 {% load catalog_tags %}
+{% load static %}
+{% load catalog_filters %}
 
-{% with cart_item_count as cart_count %}
+<!--{% with cart_item_count as cart_count %}
     <a href="{% url 'show_cart' %}">
         Shopping Cart
         <br />
         {{ cart_count }} Item{{ cart_count|pluralize }}
     </a>{{ paid }}
+{% endwith %}-->
+
+
+
+{% with cart_item_count as cart_count %}
+<!-- Cart -->
+
+    <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+        <div class="header-btns-icon">
+            <i class="fa fa-shopping-cart"></i>
+            {% if cart_count > 0 %}
+            <span class="qty">{{ cart_count }}</span>
+            {% endif %}
+        </div>
+        <strong class="text-uppercase">My Cart:</strong>
+        <br>
+        {% if cart_count > 0 %}
+        <span class="cart-total">{{ subtotal|currency }}</span>
+        {% endif %}
+    </a>
+    <div class="custom-menu cart">
+        <div id="shopping-cart">
+            <div class="shopping-cart-list">
+                {% if cart_count > 0 %}
+                {% for item in cart_items %}
+                <div class="product product-widget">
+                    <div class="product-thumb">
+                        <img src="{{ item.product.image.url }}" alt="{{ item.name }} image not found">
+                    </div>
+                    <div class="product-body">
+                        <h3 class="product-price">{{ item.price|currency }} <span class="qty">x{{ item.quantity }}</span></h3>
+                        <h2 class="product-name"><a href="{{ item.get_absolute_url }}">{{ item.name }}</a></h2>
+                    </div>
+                    <form method="post" action="{% url 'show_cart' %}" class="cart">
+                    <input type="hidden" name="item_id" value="{{ item.id }}" />
+                    <input type="hidden" name="submit" value="Remove"/>
+                    <button type="submit" class="cancel-btn"><i class="fa fa-trash"></i></button>
+                    </form>
+                </div>
+                {% endfor%}
+                {% else %}
+                <div class="product product-widget">
+                    <h6>Your Cart is Empty</h6>
+                </div>
+                {% endif %}
+            </div>
+            {% if cart_count > 0 %}
+            <div class="shopping-cart-btns">
+                <a href="{% url 'show_cart' %}"><button class="main-btn">View Cart</button></a>
+                <a href="{% url 'show_checkout' checkout_type='Lipa' %}"><button class="primary-btn">Checkout <i class="fa fa-arrow-circle-right"></i></button></a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+<!-- /Cart -->
 {% endwith %}
+
+
+
+

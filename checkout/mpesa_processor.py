@@ -13,7 +13,7 @@ from accounts.models import UserProfile
 def lipa_na_mpesa_online(request):
     print('ianlipa')
     postdata = request.POST.copy()
-    phone = postdata['phone']
+    phone = postdata['phone2']
     if phone[0] == "0":
         phone = phone.replace('0', '254', 1)
     elif phone[0:4] == "+254":
@@ -132,7 +132,7 @@ def query_lipa(request, cri):
     return message
 
 
-# checks to determin if there is any pending mpesa transaction for the current cart and querys the status if paid
+# checks to determine if there is any pending mpesa transaction for the current cart and querys the status if paid
 def pending_checker(request):
     CART_ID_SESSION_KEY = cart.CART_ID_SESSION_KEY
     pending = PendingMpesa.objects.filter(cart=request.session[CART_ID_SESSION_KEY])

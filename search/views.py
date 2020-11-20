@@ -4,6 +4,7 @@ from django.template import RequestContext
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from search import search
 from ecomstore import settings
+from catalog.models import Category
 import json
 
 
@@ -11,6 +12,8 @@ import json
 def results(request, template_name="search/results.html"):
     # get current search phrase
     q = request.GET.get('q', '')
+    slug = request.GET.get('slug', '')
+    print(slug)
     # get current page number. Set to 1 is missing or invalid
     try:
         page = int(request.GET.get('page', 1))
@@ -18,6 +21,10 @@ def results(request, template_name="search/results.html"):
         page = 1
     # retrieve the matching products
     matching = search.products(q).get('products')
+    if len(slug) > 0:
+        cat_id = Category.objects.get(slug=slug).id
+        matching = search.products2(q, cat_id).get('products')
+    print(matching)
     # generate the pagintor object
     paginator = Paginator(matching, settings.PRODUCTS_PER_PAGE)
     try:
@@ -34,7 +41,16 @@ def results(request, template_name="search/results.html"):
 # This view returns a json response of data user types in the search box in realtime and displays suggestions
 def autosearch(request):
     q = request.GET.get('q', '')
-    data = list(search.products(q).get('products').values('name', 'description', 'sku', 'brand', 'meta_description',
+    slug = request.GET.get('slug', '')
+    if len(slug) > 0:
+        cat_id = Category.objects.get(slug=slug).id
+        data = list(search.products2(q, cat_id).get('products').values('name', 'description', 'sku', 'brand', 'meta_description',
+                                                          'categories__name', 'categories__slug', 'meta_keywords',
+                                                          'categories__description', 'categories__meta_keywords',
+                                                          'categories__meta_description', 'slug', 'price', 'thumbnail',
+                                                          'image_caption'))
+    else:
+        data = list(search.products(q).get('products').values('name', 'description', 'sku', 'brand', 'meta_description',
                                                           'categories__name', 'categories__slug', 'meta_keywords',
                                                           'categories__description', 'categories__meta_keywords',
                                                           'categories__meta_description', 'slug', 'price', 'thumbnail',
@@ -60,9 +76,8 @@ def autosearch(request):
     # html = '<ul id="slist" class="sf" style="list-style: none;">'
     html = ''
     for p in testdata:
-        html += '<li id="' + p['name'] + '" class="pitem"><img src="' + settings.MEDIA_URL + p['thumbnail'] + '" id="simage" /><label>' + p['name'] + '</label></li>'
+        html += '<li id="' + p['name'] + '" class="pitem"><img src="' + settings.MEDIA_URL + p['thumbnail'] + '" id="' + p['name'] + '" class="simage" /><label id="' + p['name'] + '">' + p['name'] + '</label ></li>'
     # html += '</ul>'
-    print(html)
 
     data = data2
     return HttpResponse(html)

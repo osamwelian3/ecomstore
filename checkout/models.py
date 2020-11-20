@@ -24,13 +24,13 @@ class BaseOrderInfo(models.Model):
     shipping_country = models.CharField(max_length=50)
     shipping_zip = models.CharField(max_length=10)
     # billing information
-    billing_name = models.CharField(max_length=50)
-    billing_address_1 = models.CharField(max_length=50)
+    billing_name = models.CharField(max_length=50, blank=True)
+    billing_address_1 = models.CharField(max_length=50, blank=True)
     billing_address_2 = models.CharField(max_length=50, blank=True)
-    billing_city = models.CharField(max_length=50)
+    billing_city = models.CharField(max_length=50, blank=True)
     billing_state = models.CharField(max_length=50, blank=True, null=True)
-    billing_country = models.CharField(max_length=50)
-    billing_zip = models.CharField(max_length=10)
+    billing_country = models.CharField(max_length=50, blank=True)
+    billing_zip = models.CharField(max_length=10, blank=True)
 
 
 class Order(BaseOrderInfo):

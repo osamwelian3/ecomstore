@@ -121,6 +121,7 @@ div.product_image{
     padding:0 10px 20px 0;
     height:217px;
     width:350px;
+    word-wrap: break-word;
 }
 .product_image {
     overflow: hidden;
@@ -141,6 +142,7 @@ div.product_image{
 .pcaption {
     background: #98ac5e;
     width: max-content;
+    max-width: 350px;
 }
 
 /* style for Django error messages */
@@ -157,6 +159,7 @@ form.cart{
 
 .cs{
     clear:both;
+    padding-top: 5px;
 }
 
 /* styles for shopping cart page */
@@ -258,4 +261,230 @@ fieldset.my_account ul{
 }
 fieldset.my_account ul li{
     margin-bottom:5px;
+}
+
+
+/* Loading Animation */
+.loading-bar{
+    width: 100%;
+    display: flex;
+    position: relative;
+    justify-content: center;
+    bottom: 200px;
+}
+
+.loading-section{
+    top: -35px;
+    position: absolute;
+    transform: scale(1.5);
+}
+
+.circle{
+    width: 1px;
+    height: 5px;
+    position: absolute;
+    animation: rotate 3.5s linear infinite;
+    bottom: 90px;
+    left: 130px;
+}
+
+.circle .dot{
+    top: 30px;
+    width: 7px;
+    height: 7px;
+    background: #000;
+    border-radius: 50%;
+    position: relative;
+}
+
+.loading-text{
+    color: #000;
+    bottom: -85px;
+    font-size: 25px;
+    font-weight: 400;
+    margin-left: -50px
+    position: absolute;
+    font-family: monospace;
+    width: 350px;
+}
+
+@keyframes rotate{
+    30%{
+        transform: rotate(220deg);
+    }
+    40%{
+        transform: rotate(450deg);
+        opacity: 1;
+    }
+    75%{
+        transform: rotate(720deg);
+        opacity: 1;
+    }
+    76%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 0;
+        transform: rotate(0deg);
+    }
+}
+
+.circle:nth-child(1){
+    animation-delay: 0.15s;
+}
+.circle:nth-child(2){
+    animation-delay: 0.3s;
+}
+.circle:nth-child(3){
+    animation-delay: 0.45s;
+}
+.circle:nth-child(4){
+    animation-delay: 0.6s;
+}
+.circle:nth-child(5){
+    animation-delay: 0.75s;
+}
+.circle:nth-child(6){
+    animation-delay: 0.9s;
+}
+
+/* auto search */
+#slist {
+    list-style: none;
+    /*position: absolute;*/
+    padding: 0px;
+    /*top: 166px;
+    left: 109px;*/
+    /*border: solid black 1px;*/
+    background: aliceblue;
+
+}
+#pitem {
+    border: solid
+    black 1px;
+    text-align: center;
+    width: 119px;
+}
+#pitem:hover {
+    background: #98ac5e;
+}
+
+.pitem {
+    border: solid black 1px;
+    text-align: center;
+    /*width: 139px;*/
+    border-bottom: 0.5px solid black;
+    border-top: 0px;
+}
+.pitem:hover {
+    background: #98ac5e;
+}
+
+#btn {
+    background: #98ac5e;
+    border-radius: 15px;
+    width: 60px;
+}
+
+#id_q, #sss {
+    width: 150px;
+}
+#sss {
+    float: right;
+}
+#simage {
+    width: 20px;
+    height: 18px;
+    float: left;
+    padding: 0px;
+}
+
+#add_review{
+cursor:pointer;
+}
+.hidden{display:none;}
+.visible{display:block;}
+.new_review{background-color:Pink;}
+
+#tags a{
+color:DarkOrange;
+}
+
+/* rating */
+.txt-center {
+  text-align: center;
+}
+.hide {
+  display: none;
+}
+
+.clear {
+  float: none;
+  clear: both;
+}
+
+.rating {
+    width: 90px;
+    unicode-bidi: bidi-override;
+    direction: rtl;
+    text-align: center;
+    position: relative;
+}
+
+.rating > label {
+    float: right;
+    display: inline;
+    padding: 0;
+    margin: 0;
+    position: relative;
+    width: 1.1em;
+    cursor: pointer;
+    color: #000;
+}
+
+.rating > label:hover,
+.rating > label:hover ~ label,
+.rating > input.radio-btn:checked ~ label {
+    color: transparent;
+}
+
+.rating > label:hover:before,
+.rating > label:hover ~ label:before,
+.rating > input.radio-btn:checked ~ label:before,
+.rating > input.radio-btn:checked ~ label:before {
+    content: "\2605";
+    position: absolute;
+    left: 0;
+    color: #FFD700;
+}
+
+#loading{
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 45%;
+    background-color: Pink;
+    width: 200px;
+    font-size: medium;
+    color: Black;
+    font-weight: bold;
+    padding: 2px;
+    border: solid 1px Red;
+    text-align: center;
+    z-index: 100;
+}
+
+#noscript{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: Red;
+    color: White;
+    font-weight: bold;
+    padding: 5px;
+    text-align: center;
+}
+#noscript_padder{
+    height: 30px;
 }

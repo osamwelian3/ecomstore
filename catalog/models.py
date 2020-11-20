@@ -2,6 +2,8 @@ from django.db import models
 from django.urls import reverse
 import os
 from ecomstore import settings
+from django.contrib.auth.models import User
+import tagging.registry as tagging
 # from . import views
 
 # Create your models here.
@@ -157,3 +159,31 @@ class Product(models.Model):
                                          ).exclude(product=self)
         products = Product.active.filter(orderitem__in=items).distinct()
         return products
+
+
+try:
+    tagging.register(Product)
+except tagging.AlreadyRegistered:
+    pass
+
+
+class ActiveProductReviewManager(models.Manager):
+    def all(self):
+        return super(ActiveProductReviewManager, self).all().filter(is_approved=True)
+
+
+class ProductReview(models.Model):
+    RATINGS = ((5, 5), (4, 4), (3, 3), (2, 2), (1, 1),)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    title = models.CharField(max_length=50)
+    date = models.DateTimeField(auto_now_add=True)
+    rating = models.PositiveSmallIntegerField(default=5, choices=RATINGS)
+    is_approved = models.BooleanField(default=True)
+    content = models.TextField()
+
+    objects = models.Manager()
+    approved = ActiveProductReviewManager()
+
+    def __str__(self):
+        return '"' + self.title + '" for ' + self.product.name

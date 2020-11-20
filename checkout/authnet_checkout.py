@@ -14,10 +14,13 @@ from checkout.models import Order
 USD = settings.USD_RATE
 
 
-if Order.objects.all():
-    Number = int(Order.objects.all().count()) + 1
-    InvNo = 'INV-' + str(Number)
-else:
+try:
+    if Order.objects.all():
+        Number = int(Order.objects.all().count()) + 1
+        InvNo = 'INV-' + str(Number)
+    else:
+        InvNo = 'INV-1'
+except:
     InvNo = 'INV-1'
 
 

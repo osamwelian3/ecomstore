@@ -50,11 +50,30 @@ def cardLuhnChecksumIsValid(card_number):
 
 
 class CheckoutForm(forms.ModelForm):
+    payment = forms.CharField()
+
     def __init__(self, *args, **kwargs):
         super(CheckoutForm, self).__init__(*args, **kwargs)
         # override default attributes
         for field in self.fields:
-            self.fields[field].widget.attrs['size'] = '30'
+            self.fields[field].widget.attrs['size'] = ''
+            self.fields[field].widget.attrs['class'] = 'input'
+        self.fields['phone'].widget.attrs['placeholder'] = '*Phone'
+        self.fields['email'].widget.attrs['placeholder'] = 'Email'
+        self.fields['shipping_name'].widget.attrs['placeholder'] = '*Full Name'
+        self.fields['shipping_address_1'].widget.attrs['placeholder'] = '*Address Line 1'
+        self.fields['shipping_address_2'].widget.attrs['placeholder'] = 'Address Line 2'
+        self.fields['shipping_city'].widget.attrs['placeholder'] = '*City/Town'
+        self.fields['shipping_state'].widget.attrs['placeholder'] = 'Estate/Village'
+        self.fields['shipping_zip'].widget.attrs['placeholder'] = '*Zip/Postal Code'
+        self.fields['shipping_country'].widget.attrs['placeholder'] = '*Country'
+        self.fields['billing_name'].widget.attrs['placeholder'] = '*Billing Name'
+        self.fields['billing_address_1'].widget.attrs['placeholder'] = '*Address Line 1'
+        self.fields['billing_address_2'].widget.attrs['placeholder'] = 'Address Line 2'
+        self.fields['billing_city'].widget.attrs['placeholder'] = '*Billing City/Town'
+        self.fields['billing_state'].widget.attrs['placeholder'] = 'Billing State/Province'
+        self.fields['billing_zip'].widget.attrs['placeholder'] = '*Billing Zip/Postal Code'
+        self.fields['billing_country'].widget.attrs['placeholder'] = '*Billing Country'
         self.fields['shipping_state'].widget.attrs['size'] = ''
         self.fields['shipping_state'].widget.attrs['size'] = ''
         self.fields['shipping_zip'].widget.attrs['size'] = '6'
@@ -65,16 +84,25 @@ class CheckoutForm(forms.ModelForm):
         self.fields['credit_card_expire_year'].widget.attrs['size'] = '1'
         self.fields['credit_card_expire_month'].widget.attrs['size'] = '1'
         self.fields['credit_card_cvv'].widget.attrs['size'] = '5'
+        self.fields['credit_card_type'].widget.attrs['class'] = 'form-control'
+        self.fields['credit_card_expire_year'].widget.attrs['class'] = 'form-control'
+        self.fields['credit_card_expire_month'].widget.attrs['class'] = 'form-control'
+        self.fields['phone2'].widget.attrs['placeholder'] = 'Mpesa Phone Number'
+        self.fields['credit_card_number'].widget.attrs['placeholder'] = 'Credit Card Number'
+        self.fields['credit_card_cvv'].widget.attrs['placeholder'] = 'CVV'
 
     class Meta:
         model = Order
         exclude = ('status', 'ip_address', 'user', 'transaction_id',)
 
-    credit_card_number = forms.CharField()
-    credit_card_type = forms.CharField(widget=forms.Select(choices=CARD_TYPES))
-    credit_card_expire_month = forms.CharField(widget=forms.Select(choices=cc_expire_months()))
-    credit_card_expire_year = forms.CharField(widget=forms.Select(choices=cc_expire_years()))
-    credit_card_cvv = forms.CharField()
+    field_order = ['payment', 'billing_name']
+
+    phone2 = forms.CharField(required=False)
+    credit_card_number = forms.CharField(required=False)
+    credit_card_type = forms.CharField(widget=forms.Select(choices=CARD_TYPES), required=False)
+    credit_card_expire_month = forms.CharField(widget=forms.Select(choices=cc_expire_months()), required=False)
+    credit_card_expire_year = forms.CharField(widget=forms.Select(choices=cc_expire_years()), required=False)
+    credit_card_cvv = forms.CharField(required=False)
 
     """def clean_credit_card_number(self):
         cc_number = self.cleaned_data['credit_card_number']
@@ -82,12 +110,66 @@ class CheckoutForm(forms.ModelForm):
         if not cardLuhnChecksumIsValid(stripped_cc_number):
             raise forms.ValidationError('The credit card you entered is invalid.')"""
 
+    def clean_payment(self):
+        payment = self.cleaned_data['payment']
+        return payment
+
+    def clean_credit_card_cvv(self):
+        payment = self.cleaned_data['payment']
+        cvv = self.cleaned_data['credit_card_cvv']
+        if len(cvv) < 3 and payment == 'Place Order':
+            raise forms.ValidationError('Enter a valid CVV')
+        return self.cleaned_data['credit_card_cvv']
+
     def clean_phone(self):
         phone = self.cleaned_data['phone']
         stripped_phone = strip_non_numbers(phone)
         if len(stripped_phone) < 10:
             raise forms.ValidationError('Enter a valid phone number.(e.g. 07XX XXX XXX)')
         return self.cleaned_data['phone']
+
+    def clean_phone2(self):
+        payment = self.cleaned_data['payment']
+        phone2 = self.cleaned_data['phone2']
+        stripped_phone = strip_non_numbers(phone2)
+        if len(stripped_phone) < 10 and payment == 'Mpesa Payment':
+            raise forms.ValidationError('Enter a valid MPESA phone number.(e.g. 07XX XXX XXX)')
+        return self.cleaned_data['phone2']
+
+    def clean_billing_name(self):
+        payment = self.cleaned_data['payment']
+        billing_name = self.cleaned_data['billing_name']
+        if len(billing_name) < 2 and payment == 'Place Order':
+            raise forms.ValidationError('Enter a valid Billing Name')
+        return self.cleaned_data['billing_name']
+
+    def clean_billing_address_1(self):
+        payment = self.cleaned_data['payment']
+        billing_address_1 = self.cleaned_data['billing_address_1']
+        if len(billing_address_1) < 2 and payment == 'Place Order':
+            raise forms.ValidationError('Enter a valid Billing Address')
+        return self.cleaned_data['billing_address_1']
+
+    def clean_billing_city(self):
+        payment = self.cleaned_data['payment']
+        billing_city = self.cleaned_data['billing_city']
+        if len(billing_city) < 2 and payment == 'Place Order':
+            raise forms.ValidationError('Enter a valid Billing City')
+        return self.cleaned_data['billing_city']
+
+    def clean_billing_zip(self):
+        payment = self.cleaned_data['payment']
+        billing_zip = self.cleaned_data['billing_zip']
+        if len(billing_zip) < 2 and payment == 'Place Order':
+            raise forms.ValidationError('Enter a valid Billing Zip/Postal Code')
+        return self.cleaned_data['billing_zip']
+
+    def clean_billing_country(self):
+        payment = self.cleaned_data['payment']
+        billing_country = self.cleaned_data['billing_country']
+        if len(billing_country) < 2 and payment == 'Place Order':
+            raise forms.ValidationError('Enter a valid Billing Country')
+        return self.cleaned_data['billing_country']
 
 
 class MpesaCheckoutForm(forms.ModelForm):

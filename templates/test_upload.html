@@ -10,20 +10,6 @@
             <table>
             {% form_table_row form.name %}
             {% form_table_row form.slug %}
-            <script>
-                document.getElementById("id_name").addEventListener("change", slugvalue)
-                document.getElementById("id_name").addEventListener("keydown", slugvalue)
-                document.getElementById("id_name").addEventListener("keyup", slugvalue)
-                function slugvalue(){
-                    var name = document.getElementById("id_name");
-                    var slug = name.value;
-
-                    var slug = slug.replace(" ", "-").toLowerCase();
-                    var slug = slug.replace(/[&\/\\#, @^!\`\[\]+()$~%.'":*?<>{}]/g, '').toLowerCase();
-                    var slugvalue1 = document.getElementById("id_slug").value = slug;
-                    slugvalue.value = slug;
-                }
-            </script>
             <noscript>Sorry You don,t have javascript</noscript>
             {% form_table_row form.brand %}
             {% form_table_row form.sku %}
